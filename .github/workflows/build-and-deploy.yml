@@ -21,7 +21,7 @@ jobs:
 
     - name: Build app container
       run: |
-        docker build -t ghcr.io/${{ github.repository_owner }}/guestbook:latest app
+        docker build -t ghcr.io/${{ github.repository_owner,, }}/guestbook:latest app
 
     - name: Build redis container
       run: |

@@ -12,6 +12,7 @@ I denna labb ska ni bygga och deploya en modern, cloud-native applikation på Op
 
 ## Arkitektur
 
+
 ```txt
 Internet
     ↓

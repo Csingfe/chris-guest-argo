@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: martin-postgres-pvc
+  name: postgres-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -14,18 +14,16 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: martin-postgres
+  name: postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: martin-guestbook
-      component: postgres
+      app: postgres
   template:
     metadata:
       labels:
-        app: martin-guestbook
-        component: postgres
+        app: postgres
     spec:
       containers:
         - name: postgres
@@ -36,35 +34,34 @@ spec:
             - name: POSTGRESQL_USER
               valueFrom:
                 secretKeyRef:
-                  name: martin-db-password
+                  name: db-password
                   key: username
             - name: POSTGRESQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: martin-db-password
+                  name: db-password
                   key: password
             - name: POSTGRESQL_DATABASE
               valueFrom:
                 configMapKeyRef:
-                  name: martin-db-config
+                  name: db-config
                   key: db-name
           volumeMounts:
-            - name: martin-postgres-data
+            - name: postgres-data
               mountPath: /var/lib/postgresql
       volumes:
-        - name: martin-postgres-data
+        - name: postgres-data
           persistentVolumeClaim:
-            claimName: martin-postgres-pvc
+            claimName: postgres-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: martin-postgres
+  name: postgres
 spec:
   type: ClusterIP
   selector:
-    app: martin-guestbook
-    component: postgres
+    app: postgres
   ports:
     - port: 5432
 ---
@@ -72,7 +69,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: martin-redis-pvc
+  name: redis-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -84,18 +81,16 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: martin-redis
+  name: redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: martin-guestbook
-      component: redis
+      app: redis
   template:
     metadata:
       labels:
-        app: martin-guestbook
-        component: redis
+        app: redis
     spec:
       containers:
         - name: redis
@@ -106,25 +101,24 @@ spec:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: martin-redis-password
+                  name: redis-password
                   key: password
           volumeMounts:
-            - name: martin-redis-data
+            - name: redis-data
               mountPath: /var/lib/redis/data
       volumes:
-        - name: martin-redis-data
+        - name: redis-data
           persistentVolumeClaim:
-            claimName: martin-redis-pvc
+            claimName: redis-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: martin-redis
+  name: redis
 spec:
   type: ClusterIP
   selector:
-    app: martin-guestbook
-    component: redis
+    app: redis
   ports:
     - port: 6379
 
@@ -133,54 +127,51 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: martin-backend
+  name: backend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: martin-guestbook
-      component: backend
+      app: backend
   template:
     metadata:
       labels:
-        app: martin-guestbook
-        component: backend
+        app: backend
     spec:
       containers:
         - name: backend
-          image: ghcr.io/billare/guestbook-backend:latest
+          image: quay.io/hardo314/golang-backend:latest
           ports:
             - containerPort: 8080
           env:
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: martin-db-config
+                  name: db-config
                   key: db-host
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: martin-db-config
+                  name: db-config
                   key: redis-host
             - name: REDIS_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: martin-db-config
+                  name: db-config
                   key: redis-port
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: martin-redis-password
+                  name: redis-password
                   key: password
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: martin-backend
+  name: backend
 spec:
   type: ClusterIP
   selector:
-    app: martin-guestbook
-    component: backend
+    app: backend
   ports:
     - port: 8080

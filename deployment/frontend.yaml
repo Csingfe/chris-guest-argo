@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: martin-frontend
+  name: frontend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: martin-guestbook
+      app: guestbook
       component: frontend
   template:
     metadata:
       labels:
-        app: martin-guestbook
+        app: guestbook
         component: frontend
     spec:
       containers:
@@ -24,11 +24,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: martin-frontend
+  name: frontend
 spec:
   type: ClusterIP
   selector:
-    app: martin-guestbook
+    app: guestbook
     component: frontend
   ports:
     - port: 8080
@@ -37,10 +37,10 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: martin-frontend
+  name: frontend
 spec:
   to:
     kind: Service
-    name: martin-frontend
+    name: frontend
   port:
     targetPort: 8080

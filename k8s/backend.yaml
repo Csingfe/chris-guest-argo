@@ -30,13 +30,13 @@ spec:
           image: quay.io/fedora/postgresql-16:latest
           ports:
             - containerPort: 5432
-              resources:
-              requests:
-                cpu: "10m"
-                memory: "64Mi"
-              limits:
-                cpu: "30m"
-                memory: "100Mi"
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "64Mi"
+            limits:
+              cpu: "30m"
+              memory: "100Mi"
           env:
             - name: POSTGRESQL_USER
               valueFrom:
@@ -104,13 +104,13 @@ spec:
           image: quay.io/kurs/redis:latest
           ports:
             - containerPort: 6379
-              resources:
-                requests:
-                  cpu: "100m"
-                  memory: "128Mi"
-                limits:
-                  cpu: "200m"
-                  memory: "256Mi"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
           env:
             - name: REDIS_PASSWORD
               valueFrom:

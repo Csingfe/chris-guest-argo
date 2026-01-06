@@ -19,18 +19,24 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: chris-guestbook
-      component: postgres
+      app: chris-postgres
   template:
     metadata:
       labels:
         app: postgres
     spec:
       containers:
-        - name: postgres
+        - name: chris-postgres
           image: quay.io/fedora/postgresql-16:latest
           ports:
             - containerPort: 5432
+            resources:
+              requests:
+                memory: "10m"
+                cpu: "64Mi"
+              limits:
+                memory: "30m"
+                cpu: "100Mi"
           env:
             - name: POSTGRESQL_USER
               valueFrom:
@@ -62,8 +68,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: chris-guestbook
-    component: postgres
+    app: chris-postgres
   ports:
     - port: 5432
 ---
@@ -88,19 +93,24 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: chris-guestbook
-      component: redis
+      app: chris-redis
   template:
     metadata:
       labels:
-        app: chris-guestbook
-        component: redis
+        app: chris-redis
     spec:
       containers:
         - name: redis
           image: quay.io/kurs/redis:latest
           ports:
             - containerPort: 6379
+              resources:
+                requests:
+                  memory: "20m"
+                  cpu: "16Mi"
+                limits:
+                  memory: "50m"
+                  cpu: "32Mi"
           env:
             - name: REDIS_PASSWORD
               valueFrom:
@@ -122,8 +132,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: chris-guestbook
-    component: redis
+    app: chris-redis
   ports:
     - port: 6379
 
@@ -134,47 +143,54 @@ kind: Deployment
 metadata:
   name: chris-backend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: chris-guestbook
-      component: backend
+      app: chris-backend
   template:
     metadata:
       labels:
-        app: backend
+        app: chris-backend
     spec:
       containers:
-        - name: backend
-          image: quay.io/hardo314/golang-backend:latest
+        - name: chris-backend
+          image: ghcr.io/csingfe/guestbook-backend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              memory: "10m"
+              cpu: "20Mi"
+            limits:
+              memory: "30m"
+              cpu: "40Mi"
           env:
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: db-config
+                  name: chris-db-config
                   key: db-host
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: db-config
+                  name: chris-db-config
                   key: redis-host
             - name: REDIS_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: db-config
+                  name: chris-db-config
                   key: redis-port
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: redis-password
+                  name: chris-redis-password
                   key: password
----
+---,
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: chris-backend
 spec:
   type: ClusterIP
   selector:

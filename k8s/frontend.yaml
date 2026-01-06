@@ -1,25 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: chris-frontend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: chris-guestbook
-      component: frontend
+      app: chris-frontend
   template:
     metadata:
       labels:
-        app: chris-guestbook
-        component: frontend
+        app: chris-frontend
     spec:
       containers:
-        - name: frontend
-          image: ghcr.io/billare/chris-guestbook-frontend:latest   #
+        - name: chris-frontend
+          image: ghcr.io/csingfe/guestbook-frontend:latest   #
           imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
+          resources:
+            limits:
+              cpu: "10m"
+              memory: "50Mi"
+            requests:
+              cpu: "30m"
+              memory: "80Mi"
 ---
 apiVersion: v1
 kind: Service
@@ -28,19 +31,15 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: chris-guestbook
-    component: frontend
+    app: chris-frontend
   ports:
     - port: 8080
-      targetPort: 8080
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: frontend
+  name: chris-frontend
 spec:
   to:
     kind: Service
-    name: frontend
-  port:
-    targetPort: 8080
+    name: chris-frontend

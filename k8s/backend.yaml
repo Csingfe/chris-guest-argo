@@ -23,7 +23,7 @@ spec:
   template:
     metadata:
       labels:
-        app: postgres
+        app: chris-postgres
     spec:
       containers:
         - name: chris-postgres

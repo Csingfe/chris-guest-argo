@@ -30,7 +30,7 @@ spec:
           image: quay.io/fedora/postgresql-16:latest
           ports:
             - containerPort: 5432
-            resources:
+              resources:
               requests:
                 cpu: "10m"
                 memory: "64Mi"

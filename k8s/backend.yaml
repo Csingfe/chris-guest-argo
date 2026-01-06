@@ -59,7 +59,7 @@ spec:
       volumes:
         - name: chris-postgres-data
           persistentVolumeClaim:
-            claimName: postgres-pvc
+            claimName: chris-postgres-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -106,11 +106,11 @@ spec:
             - containerPort: 6379
               resources:
                 requests:
-                  cpu: "20m"
-                  memory: "16Mi"
+                  cpu: "100m"
+                  memory: "128Mi"
                 limits:
-                  cpu: "50m"
-                  memory: "32Mi"
+                  cpu: "200m"
+                  memory: "256Mi"
           env:
             - name: REDIS_PASSWORD
               valueFrom:
@@ -194,6 +194,6 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: backend
+    app: chrisbackend
   ports:
     - port: 8080

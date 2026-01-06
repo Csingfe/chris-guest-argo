@@ -186,7 +186,7 @@ spec:
                 secretKeyRef:
                   name: chris-redis-password
                   key: password
----,
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -194,6 +194,6 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: chrisbackend
+    app: chris-backend
   ports:
     - port: 8080

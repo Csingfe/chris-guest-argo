@@ -37,6 +37,7 @@ spec:
             limits:
               cpu: "30m"
               memory: "100Mi"
+              
           env:
             - name: POSTGRESQL_USER
               valueFrom:

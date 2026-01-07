@@ -14,26 +14,32 @@ spec:
     spec:
       containers:
         - name: chris-frontend
-          image: ghcr.io/csingfe/guestbook-frontend:latest   #
+          image: ghcr.io/csingfe/guestbook-frontend:latest
           imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
           resources:
-            limits:
-              cpu: "30m"
-              memory: "80Mi"
             requests:
               cpu: "10m"
               memory: "50Mi"
+            limits:
+              cpu: "30m"
+              memory: "80Mi"
+          env:
+            - name: BACKEND_URL
+              value: "http://chris-backend:8080"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: chris-frontend
 spec:
   type: ClusterIP
   selector:
     app: chris-frontend
   ports:
     - port: 8080
+      targetPort: 8080
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
@@ -43,3 +49,9 @@ spec:
   to:
     kind: Service
     name: chris-frontend
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

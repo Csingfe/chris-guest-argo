@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: chris-frontend
-          image: ghcr.io/csingfe/chris-guest-frontend:latest
+          image: ghcr.io/csingfe/chris-guest-argo/frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

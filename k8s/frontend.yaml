@@ -12,7 +12,7 @@ spec:
       labels:
         app: chris-frontend
       annotations:
-        kubectl.kubernetes.io/restartedAt: "2026-01-07T11:28:00Z"
+        restartedAt: "2026-01-07-11-37"
     spec:
       containers:
         - name: chris-frontend
@@ -22,14 +22,11 @@ spec:
             - containerPort: 8080
           resources:
             requests:
-              cpu: "10m"
-              memory: "50Mi"
+              cpu: "100m"
+              memory: "256Mi"
             limits:
-              cpu: "30m"
-              memory: "80Mi"
-          env:
-            - name: BACKEND_URL
-              value: "http://chris-backend:8080"
+              cpu: "100m"
+              memory: "512Mi"
 ---
 apiVersion: v1
 kind: Service
@@ -51,7 +48,6 @@ spec:
   to:
     kind: Service
     name: chris-frontend
-    weight: 100
   port:
     targetPort: 8080
   tls:

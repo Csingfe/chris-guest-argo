@@ -25,9 +25,9 @@ jobs:
 
     - name: Build frontend container
       run: |
-        docker build -f frontend/Containerfile -t ghcr.io/csingfe/chris-guest-frontend:latest ./frontend
+        docker build -f frontend/Containerfile -t ghcr.io/csingfe/chris-guest-argo/frontend:latest ./frontend
 
     - name: Push containers
       run: |
         docker push ghcr.io/csingfe/chris-guest-backend:latest
-        docker push ghcr.io/csingfe/chris-guest-frontend:latest
+        docker push ghcr.io/csingfe/chris-guest-argo/frontend:latest

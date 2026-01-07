@@ -172,6 +172,36 @@ spec:
                 configMapKeyRef:
                   name: chris-db-config
                   key: db-host
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: chris-db-config
+                  key: db-name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: chris-db-password
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: chris-db-password
+                  key: password
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: chris-db-config
+                  key: db-name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: chris-db-password
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: chris-db-password
+                  key: password
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:

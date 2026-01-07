@@ -142,7 +142,7 @@ kind: Deployment
 metadata:
   name: chris-backend
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: chris-backend

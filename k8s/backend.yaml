@@ -100,7 +100,7 @@ spec:
         app: chris-redis
     spec:
       containers:
-        - name: redis
+        - name: chris-redis
           image: quay.io/kurs/redis:latest
           ports:
             - containerPort: 6379

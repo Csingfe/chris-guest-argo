@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: chris-db-config
 data:
-  db-name: chris-guestbook
+  db-name: guestbook
   db-host: chris-postgres
   redis-host: chris-redis
   redis-port: "6379"
